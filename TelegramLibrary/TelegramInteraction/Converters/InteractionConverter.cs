@@ -9,12 +9,12 @@ namespace TelegramLibrary.TelegramInteraction.Converters
 {
     internal static class InteractionConverter
     {
-        internal static KeyboardButton ToTelegramControl(this Models.MessageControls.KeyboardButton button)
+        internal static KeyboardButton ToTelegramControl(this Models.WindowControls.KeyboardButton button)
         {
             return new KeyboardButton(button.Name);
         }
 
-        internal static InlineKeyboardButton ToTelegramControl(this Models.MessageControls.CallbackButton button)
+        internal static InlineKeyboardButton ToTelegramControl(this Models.WindowControls.CallbackButton button)
         {
             return new InlineKeyboardButton() { Text = button.Text, CallbackData = button.Data };
         }

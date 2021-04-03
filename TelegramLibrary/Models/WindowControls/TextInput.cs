@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using Telegram.Bot.Types;
 using TelegramLibrary.Extensions;
 
-namespace TelegramLibrary.Models.MainControls
+namespace TelegramLibrary.Models.WindowControls
 {
-    public class TextInput : MainControlBase, ISingleControl
+    public class TextInput : WindowControlBase, ISingleControl
     {
         internal override bool IsAbleToProceed(Update update)
         {

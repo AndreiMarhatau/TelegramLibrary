@@ -37,46 +37,41 @@ namespace TelegramLibrary.Builders
             return this;
         }
 
-        public ITelegramServiceBuilder UseStartWindow(WindowBase window)
+        public IMainControlBuilder UseMainControls()
         {
-            this._initialWindow = window;
-            return this.UseWindow(window);
+            return new MainControlBuilder(this);
         }
 
-        public ITelegramServiceBuilder UseWindow(WindowBase window)
+        ITelegramServiceBuilder ITelegramServiceBuilder.SaveMainControls(IEnumerable<MainControlBase> controls)
+        {
+            LibraryStaticContext.Storage.Controls = LibraryStaticContext.Storage.Controls.Concat(controls);
+            return this;
+        }
+
+        public IWindowBuilder UseWindow(WindowBase window)
         {
             if (_windows.Select(window => window.GetFullName()).Any(windowName => windowName == window.GetFullName()))
             {
                 throw new InvalidOperationException("Every window should be registered only once.");
             }
-            this._windows.Add(window);
-            return this;
+            return new WindowBuilder(this, window);
         }
 
-        public IWindowControlBuilder UseControls()
+        ITelegramServiceBuilder ITelegramServiceBuilder.SaveWindow(WindowBase window)
         {
-            return new WindowControlBuilder(this);
-        }
-
-        ITelegramServiceBuilder ITelegramServiceBuilder.SaveControls(IEnumerable<MainControlBase> controls)
-        {
-            _windows.Last().Controls = _windows.Last().Controls.Concat(controls);
-            return this;
-        }
-
-        public ITelegramMessageBuilder UseMessage(Func<string> text)
-        {
-            return new TelegramMessageBuilder(this, text());
-        }
-
-        ITelegramServiceBuilder ITelegramServiceBuilder.SaveMessage(Message message)
-        {
-            _windows.Last().Messages.Add(message);
+            _windows.Add(window);
+            if(_initialWindow == null)
+            {
+                _initialWindow = window;
+            }
             return this;
         }
 
         public ITelegramService GetService()
         {
+            this.UseMainControls()
+                .UseCommandControl("start", (o, e) => e.TelegramInteractor.SendStartWindow())
+            .SaveControls();
             var repositoryFactory = new RepositoriesFactory(_dbConfigurationAction);
             var service = new TelegramService(_url, _token, repositoryFactory, _initialWindow);
             service.RegisterWindows(this._windows.Distinct().ToArray());

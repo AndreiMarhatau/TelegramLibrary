@@ -5,16 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using TelegramLibrary.Models;
 using TelegramLibrary.Models.ArgsForEvents;
-using TelegramLibrary.Models.MessageControls;
+using TelegramLibrary.Models.WindowControls;
 
 namespace TelegramLibrary.Builders
 {
     public class MessageCallbackControlBuilder : IMessageCallbackControlBuilder
     {
-        private ITelegramMessageBuilder _telegramMessageBuilder;
+        private IMessageBuilder _telegramMessageBuilder;
         private List<List<IPositionalControl>> _positionalControls = new List<List<IPositionalControl>>();
 
-        internal MessageCallbackControlBuilder(ITelegramMessageBuilder telegramMessageBuilder)
+        internal MessageCallbackControlBuilder(IMessageBuilder telegramMessageBuilder)
         {
             this._telegramMessageBuilder = telegramMessageBuilder;
         }
@@ -33,7 +33,7 @@ namespace TelegramLibrary.Builders
             return this;
         }
 
-        public ITelegramMessageBuilder SaveControls()
+        public IMessageBuilder SaveControls()
         {
             return this._telegramMessageBuilder.SaveControls(_positionalControls);
         }

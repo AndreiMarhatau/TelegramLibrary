@@ -4,16 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Telegram.Bot.Types;
-using TelegramLibrary.Models.MessageControls;
+using TelegramLibrary.Models.WindowControls;
 
 namespace TelegramLibrary.Models
 {
     public abstract class WindowBase
     {
-        internal IEnumerable<MainControlBase> Controls { get; set; } = new List<MainControlBase>()
-        {
-            new StartCommand((o, e) => e.TelegramInteractor.SendStartWindow()),
-        };
+        internal IEnumerable<WindowControlBase> Controls { get; set; } = new List<WindowControlBase>();
         internal IList<Message> Messages { get; set; } = new List<Message>();
 
         public string GetFullName()
@@ -21,7 +18,7 @@ namespace TelegramLibrary.Models
             return this.GetType().FullName;
         }
 
-        internal MainControlBase FindHandlingControl(Update update)
+        internal WindowControlBase FindHandlingControl(Update update)
         {
             return Controls.FirstOrDefault(control => control.IsAbleToProceed(update));
         }

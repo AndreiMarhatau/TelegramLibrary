@@ -11,6 +11,6 @@ namespace TelegramLibrary.Builders
     {
         IMessageCallbackControlBuilder CreateRow();
         IMessageCallbackControlBuilder UseCallbackButtonControl(string text, string data, EventHandler<ControlHandlingEventArgs> handler);
-        ITelegramMessageBuilder SaveControls();
+        IMessageBuilder SaveControls();
     }
 }

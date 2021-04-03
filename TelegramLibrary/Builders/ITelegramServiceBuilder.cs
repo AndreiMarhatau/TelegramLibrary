@@ -13,12 +13,10 @@ namespace TelegramLibrary.Builders
         ITelegramServiceBuilder UseToken(string botToken);
         ITelegramServiceBuilder UseWebHookUrl(string url);
         ITelegramServiceBuilder UseDbConfiguration(Action<DbContextOptionsBuilder> action);
-        ITelegramServiceBuilder UseStartWindow(WindowBase window);
-        ITelegramServiceBuilder UseWindow(WindowBase window);
+        IMainControlBuilder UseMainControls();
+        ITelegramServiceBuilder SaveMainControls(IEnumerable<MainControlBase> controls);
+        IWindowBuilder UseWindow(WindowBase window);
+        ITelegramServiceBuilder SaveWindow(WindowBase window);
         ITelegramService GetService();
-        ITelegramMessageBuilder UseMessage(Func<string> text);
-        ITelegramServiceBuilder SaveMessage(Message message);
-        IWindowControlBuilder UseControls();
-        ITelegramServiceBuilder SaveControls(IEnumerable<MainControlBase> controls);
     }
 }

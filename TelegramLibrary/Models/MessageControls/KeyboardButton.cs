@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Telegram.Bot.Types;
 using TelegramLibrary.Models.ArgsForEvents;
 
-namespace TelegramLibrary.Models.MessageControls
+namespace TelegramLibrary.Models.WindowControls
 {
     public class KeyboardButton : MessageControlBase, IPositionalControl
     {

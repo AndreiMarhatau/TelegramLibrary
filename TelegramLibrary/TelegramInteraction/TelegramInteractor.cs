@@ -51,7 +51,7 @@ namespace TelegramLibrary.TelegramInteraction
             var window = _storage.RegisteredWindows.Single(window => window.GetType() == windowType);
             foreach (var message in window.Messages)
             {
-                bool? isCallback = message.PositionalControls.Any() ? message.PositionalControls.First().First() is Models.MessageControls.CallbackButton : null;
+                bool? isCallback = message.PositionalControls.Any() ? message.PositionalControls.First().First() is Models.WindowControls.CallbackButton : null;
                 IReplyMarkup replyMarkup = null;
                 if (isCallback == true)
                 {
@@ -59,7 +59,7 @@ namespace TelegramLibrary.TelegramInteraction
                         .Select(controlRow =>
                             controlRow
                             .Select(control =>
-                                (control as Models.MessageControls.CallbackButton)
+                                (control as Models.WindowControls.CallbackButton)
                                 .ToTelegramControl()))) : null;
                 }
                 else if(isCallback == false)
@@ -68,7 +68,7 @@ namespace TelegramLibrary.TelegramInteraction
                         .Select(controlRow =>
                             controlRow
                             .Select(control =>
-                                (control as Models.MessageControls.KeyboardButton)
+                                (control as Models.WindowControls.KeyboardButton)
                                 .ToTelegramControl())), resizeKeyboard: true) : null;
                 }
                 await _telegramBotClient.SendTextMessageAsync(_update.GetMessage().Chat.Id, message.Text, replyMarkup: replyMarkup);

@@ -7,11 +7,11 @@ using TelegramLibrary.Models;
 
 namespace TelegramLibrary.Builders
 {
-    public interface ITelegramMessageBuilder
+    public interface IMessageBuilder
     {
-        ITelegramServiceBuilder SaveMessage();
+        IWindowBuilder SaveMessage();
         IMessageKeyboardControlBuilder UseKeyboardControls();
         IMessageCallbackControlBuilder UseCallbackControls();
-        ITelegramMessageBuilder SaveControls(IEnumerable<IEnumerable<IPositionalControl>> positionalControls);
+        IMessageBuilder SaveControls(IEnumerable<IEnumerable<IPositionalControl>> positionalControls);
     }
 }

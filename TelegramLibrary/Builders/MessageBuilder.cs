@@ -7,16 +7,16 @@ using TelegramLibrary.Models;
 
 namespace TelegramLibrary.Builders
 {
-    public class TelegramMessageBuilder : ITelegramMessageBuilder
+    public class MessageBuilder : IMessageBuilder
     {
         private string _text;
-        private ITelegramServiceBuilder _telegramServiceBuilder;
+        private IWindowBuilder _windowBuilder;
         private Message _message;
 
-        internal TelegramMessageBuilder(ITelegramServiceBuilder telegramServiceBuilder, string text)
+        internal MessageBuilder(IWindowBuilder windowBuilder, string text)
         {
             this._text = text;
-            this._telegramServiceBuilder = telegramServiceBuilder;
+            this._windowBuilder = windowBuilder;
             this._message = new Message() { Text = _text };
         }
 
@@ -30,15 +30,15 @@ namespace TelegramLibrary.Builders
             return new MessageCallbackControlBuilder(this);
         }
 
-        ITelegramMessageBuilder ITelegramMessageBuilder.SaveControls(IEnumerable<IEnumerable<IPositionalControl>> positionalControls)
+        IMessageBuilder IMessageBuilder.SaveControls(IEnumerable<IEnumerable<IPositionalControl>> positionalControls)
         {
             _message.PositionalControls = positionalControls;
             return this;
         }
 
-        public ITelegramServiceBuilder SaveMessage()
+        public IWindowBuilder SaveMessage()
         {
-            return _telegramServiceBuilder.SaveMessage(this._message);
+            return _windowBuilder.SaveMessage(this._message);
         }
     }
 }

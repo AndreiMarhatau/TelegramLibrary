@@ -7,9 +7,9 @@ using TelegramLibrary.Models.ArgsForEvents;
 
 namespace TelegramLibrary.Builders
 {
-    public interface IWindowControlBuilder
+    public interface IMainControlBuilder
     {
-        IWindowControlBuilder UseTextInputControl(EventHandler<ControlHandlingEventArgs> handler);
-        IWindowBuilder SaveControls();
+        IMainControlBuilder UseCommandControl(string command, EventHandler<ControlHandlingEventArgs> handler);
+        ITelegramServiceBuilder SaveControls();
     }
 }

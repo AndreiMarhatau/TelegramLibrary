@@ -41,15 +41,26 @@ namespace TelegramLibrary
             UserModel user = await userRepository.GetOrCreateUser(update.GetFrom().Id, _initialWindow.GetFullName());
             var window = user.WindowBase;
 
+            var mainControl = _storage.FindHandlingControl(update);
+
+            if (mainControl != null)
+            {
+                mainControl.Handle(new TelegramInteractor(_telegramBotClient, update, user, _initialWindow, _storage, userRepository));
+                return;
+            }
+
             var messageControl = window.FindMessageHandlingControl(update);
-            var mainControl = window.FindHandlingControl(update);
             if (messageControl != null)
             {
                 messageControl.Handle(new TelegramInteractor(_telegramBotClient, update, user, _initialWindow, _storage, userRepository));
+                return;
             }
-            else if(mainControl != null)
+
+            var windowControl = window.FindHandlingControl(update);
+            if(windowControl != null)
             {
-                mainControl.Handle(new TelegramInteractor(_telegramBotClient, update, user, _initialWindow, _storage, userRepository));
+                windowControl.Handle(new TelegramInteractor(_telegramBotClient, update, user, _initialWindow, _storage, userRepository));
+                return;
             }
         }
     }

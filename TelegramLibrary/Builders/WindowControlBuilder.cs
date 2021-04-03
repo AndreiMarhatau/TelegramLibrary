@@ -5,37 +5,47 @@ using System.Text;
 using System.Threading.Tasks;
 using TelegramLibrary.Models;
 using TelegramLibrary.Models.ArgsForEvents;
-using TelegramLibrary.Models.MainControls;
-using TelegramLibrary.Models.MessageControls;
+using TelegramLibrary.Models.WindowControls;
+using TelegramLibrary.Models.WindowControls;
 
 namespace TelegramLibrary.Builders
 {
     public class WindowControlBuilder : IWindowControlBuilder
     {
-        private ITelegramServiceBuilder _telegramServiceBuilder;
+        private IWindowBuilder _windowBuilder;
 
-        private List<MainControlBase> _controls = new List<MainControlBase>();
+        private List<WindowControlBase> _controls = new List<WindowControlBase>();
 
-        internal WindowControlBuilder(ITelegramServiceBuilder telegramServiceBuilder)
+        internal WindowControlBuilder(IWindowBuilder windowBuilder)
         {
-            this._telegramServiceBuilder = telegramServiceBuilder;
+            this._windowBuilder = windowBuilder;
         }
 
         public IWindowControlBuilder UseTextInputControl(EventHandler<ControlHandlingEventArgs> handler)
         {
-            if(_controls.Any(control => control.GetType() == typeof(TextInput)))
+            ValidateControls<TextInput>();
+            var control = new TextInput();
+            return this.AddControl(control, handler);
+        }
+
+        public IWindowBuilder SaveControls()
+        {
+            return this._windowBuilder.SaveWindowControls(_controls);
+        }
+
+        private void ValidateControls<T>() where T: WindowControlBase
+        {
+            if (_controls.Any(control => control.GetType() == typeof(T)))
             {
                 throw new InvalidOperationException("Every control in a window should be unique.");
             }
-            var control = new TextInput();
+        }
+
+        private IWindowControlBuilder AddControl(WindowControlBase control, EventHandler<ControlHandlingEventArgs> handler)
+        {
             control.HandleEvent += handler;
             _controls.Add(control);
             return this;
-        }
-
-        public ITelegramServiceBuilder SaveControls()
-        {
-            return this._telegramServiceBuilder.SaveControls(_controls);
         }
     }
 }

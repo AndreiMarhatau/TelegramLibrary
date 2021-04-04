@@ -17,6 +17,7 @@ namespace TelegramLibrary.Builders
         private List<WindowBase> _windows = new List<WindowBase>();
         private WindowBase _initialWindow;
         private bool _registerCommands = false;
+        private IConnectionLimiter _limiter;
 
         public TelegramServiceBuilder() { }
 
@@ -74,13 +75,24 @@ namespace TelegramLibrary.Builders
             return this;
         }
 
+        public IConnectionLimiterBuilder UseConnectionLimiter()
+        {
+            return new ConnectionLimiterBuilder(this);
+        }
+
+        public ITelegramServiceBuilder SaveLimiter(IConnectionLimiter limiter)
+        {
+            this._limiter = limiter;
+            return this;
+        }
+
         public async Task<ITelegramService> GetService()
         {
             this.UseMainControls()
                 .UseCommandControl("start", (o, e) => e.TelegramInteractor.SendStartWindow())
             .SaveControls();
             var repositoryFactory = new RepositoriesFactory(_dbConfigurationAction);
-            var service = new TelegramService(_url, _token, repositoryFactory, _initialWindow);
+            var service = new TelegramService(_url, _token, repositoryFactory, _initialWindow, _limiter);
             service.RegisterWindows(this._windows.Distinct().ToArray());
             if (_registerCommands)
             {

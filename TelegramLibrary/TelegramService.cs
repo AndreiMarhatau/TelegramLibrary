@@ -22,13 +22,15 @@ namespace TelegramLibrary
         private TelegramBotClient _telegramBotClient;
         private RepositoriesFactory _repositoriesFactory;
         private WindowBase _initialWindow;
+        private IConnectionLimiter _limiter;
 
-        internal TelegramService(string webHookUrl, string botToken, RepositoriesFactory repositoriesFactory, WindowBase initialWindow)
+        internal TelegramService(string webHookUrl, string botToken, RepositoriesFactory repositoriesFactory, WindowBase initialWindow, IConnectionLimiter _limiter)
         {
             this._telegramBotClient = new TelegramBotClient(botToken);
             this._telegramBotClient.SetWebhookAsync(webHookUrl);
             this._repositoriesFactory = repositoriesFactory;
             this._initialWindow = initialWindow;
+            this._limiter = _limiter;
         }
 
         internal void RegisterWindows(params WindowBase[] windows)
@@ -46,41 +48,53 @@ namespace TelegramLibrary
         
         public async Task HandleUpdate(Update update)
         {
-            IUserRepository userRepository = _repositoriesFactory.GetUserRepository();
-            UserModel user = await userRepository.GetOrCreateUser(update.GetFrom().Id, _initialWindow.GetFullName());
-            var window = user.WindowBase;
-            var telegramInteractor = new TelegramInteractor(_telegramBotClient, update, user, _initialWindow, _storage, userRepository);
-
-            var mainControl = _storage.FindHandlingControl(update);
-
-            if (mainControl != null)
+            if (_limiter?.TryCapture(update.GetFrom().Id) == false)
             {
-                mainControl.Handle(telegramInteractor);
                 return;
             }
 
-            var messageControl = window.FindMessageHandlingControl(update);
-            if (messageControl != null)
+            try
             {
-                messageControl.Handle(telegramInteractor);
-                return;
-            }
+                IUserRepository userRepository = _repositoriesFactory.GetUserRepository();
+                UserModel user = await userRepository.GetOrCreateUser(update.GetFrom().Id, _initialWindow.GetFullName());
+                var window = user.WindowBase;
+                var telegramInteractor = new TelegramInteractor(_telegramBotClient, update, user, _initialWindow, _storage, userRepository);
 
-            foreach(var _window in _storage.RegisteredWindows)
-            {
-                var control = _window.FindMessageHandlingControl(update, true);
-                if(control != null)
+                var mainControl = _storage.FindHandlingControl(update);
+
+                if (mainControl != null)
                 {
-                    control.Handle(telegramInteractor);
+                    mainControl.Handle(telegramInteractor);
+                    return;
+                }
+
+                var messageControl = window.FindMessageHandlingControl(update);
+                if (messageControl != null)
+                {
+                    messageControl.Handle(telegramInteractor);
+                    return;
+                }
+
+                foreach (var _window in _storage.RegisteredWindows)
+                {
+                    var control = _window.FindMessageHandlingControl(update, true);
+                    if (control != null)
+                    {
+                        control.Handle(telegramInteractor);
+                        return;
+                    }
+                }
+
+                var windowControl = window.FindHandlingControl(update);
+                if (windowControl != null)
+                {
+                    windowControl.Handle(telegramInteractor);
                     return;
                 }
             }
-
-            var windowControl = window.FindHandlingControl(update);
-            if(windowControl != null)
+            finally
             {
-                windowControl.Handle(telegramInteractor);
-                return;
+                _limiter?.Release(update.GetFrom().Id);
             }
         }
     }

@@ -16,6 +16,7 @@ namespace TelegramLibrary.Builders
         IMainControlBuilder UseMainControls();
         ITelegramServiceBuilder RegisterCommands();
         IWindowBuilder UseWindow(WindowBase window);
+        IConnectionLimiterBuilder UseConnectionLimiter();
         Task<ITelegramService> GetService();
     }
 
@@ -23,5 +24,6 @@ namespace TelegramLibrary.Builders
     {
         ITelegramServiceBuilder SaveMainControls(IEnumerable<MainControlBase> controls);
         ITelegramServiceBuilder SaveWindow(WindowBase window);
+        ITelegramServiceBuilder SaveLimiter(IConnectionLimiter limiter);
     }
 }

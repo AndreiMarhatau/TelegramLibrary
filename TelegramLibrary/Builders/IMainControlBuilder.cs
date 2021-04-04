@@ -9,7 +9,7 @@ namespace TelegramLibrary.Builders
 {
     public interface IMainControlBuilder
     {
-        IMainControlBuilder UseCommandControl(string command, EventHandler<ControlHandlingEventArgs> handler);
+        IMainControlBuilder UseCommandControl(string command, EventHandler<ControlHandlingEventArgs> handler, string description = null);
         ITelegramServiceBuilder SaveControls();
     }
 }

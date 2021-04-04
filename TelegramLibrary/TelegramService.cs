@@ -12,6 +12,7 @@ using TelegramLibrary.Repositories;
 using TelegramLibrary.Extensions;
 using TelegramLibrary.TelegramInteraction;
 using TelegramLibrary.Repositories.UserRepo;
+using TelegramLibrary.Models.MainControls;
 
 namespace TelegramLibrary
 {
@@ -30,9 +31,17 @@ namespace TelegramLibrary
             this._initialWindow = initialWindow;
         }
 
-        public void RegisterWindows(params WindowBase[] windows)
+        internal void RegisterWindows(params WindowBase[] windows)
         {
             _storage.RegisteredWindows = _storage.RegisteredWindows.Concat(windows);
+        }
+
+        internal async Task RegisterCommands()
+        {
+            await this._telegramBotClient.SetMyCommandsAsync(
+                _storage.Controls
+                    .Where(control => control is Command && (control as Command).Description?.Length >= 3 && (control as Command).Description?.Length <= 256)
+                    .Select(control => new BotCommand() { Command = (control as Command).CommandText, Description = (control as Command).Description }));
         }
         
         public async Task HandleUpdate(Update update)

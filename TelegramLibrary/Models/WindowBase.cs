@@ -11,7 +11,7 @@ namespace TelegramLibrary.Models
     public abstract class WindowBase
     {
         internal IEnumerable<WindowControlBase> Controls { get; set; } = new List<WindowControlBase>();
-        internal IList<Message> Messages { get; set; } = new List<Message>();
+        public IList<Message> Messages { get; internal set; } = new List<Message>();
 
         public string GetFullName()
         {

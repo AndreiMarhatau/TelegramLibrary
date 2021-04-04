@@ -30,9 +30,9 @@ namespace TelegramLibrary.Builders
             return this;
         }
 
-        public IMessageBuilder UseMessage(Func<string> text)
+        public IMessageBuilder UseMessage(string text)
         {
-            return new MessageBuilder(this, text());
+            return new MessageBuilder(this, text);
         }
 
         public IWindowControlBuilder UseWindowControls()

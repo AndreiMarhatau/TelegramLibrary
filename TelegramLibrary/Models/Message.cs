@@ -9,6 +9,6 @@ namespace TelegramLibrary.Models
     public class Message
     {
         internal IEnumerable<IEnumerable<IPositionalControl>> PositionalControls { get; set; } = new List<IEnumerable<IPositionalControl>>();
-        internal string Text { get; set; }
+        public string Text { get; set; }
     }
 }

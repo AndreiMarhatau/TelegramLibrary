@@ -24,13 +24,13 @@ namespace TelegramLibrary.Builders
             return _telegramServiceBuilder.SaveMainControls(_controls);
         }
 
-        public IMainControlBuilder UseCommandControl(string command, EventHandler<ControlHandlingEventArgs> handler)
+        public IMainControlBuilder UseCommandControl(string command, EventHandler<ControlHandlingEventArgs> handler, string description = null)
         {
             if (_controls.Any(control => (control as Command)?.CommandText == command))
             {
                 throw new InvalidOperationException("This command has been already registered.");
             }
-            var control = new Command(command);
+            var control = new Command(command, description);
             control.HandleEvent += handler;
             _controls.Add(control);
             return this;

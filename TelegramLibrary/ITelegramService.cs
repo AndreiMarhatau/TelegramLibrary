@@ -10,7 +10,6 @@ namespace TelegramLibrary
 {
     public interface ITelegramService
     {
-        public void RegisterWindows(params WindowBase[] windows);
-        public Task HandleUpdate(Update update);
+        Task HandleUpdate(Update update);
     }
 }

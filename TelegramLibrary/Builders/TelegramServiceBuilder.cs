@@ -16,6 +16,7 @@ namespace TelegramLibrary.Builders
         private Action<DbContextOptionsBuilder> _dbConfigurationAction;
         private List<WindowBase> _windows = new List<WindowBase>();
         private WindowBase _initialWindow;
+        private bool _registerCommands = false;
 
         public TelegramServiceBuilder() { }
 
@@ -48,6 +49,12 @@ namespace TelegramLibrary.Builders
             return this;
         }
 
+        public ITelegramServiceBuilder RegisterCommands()
+        {
+            this._registerCommands = true;
+            return this;
+        }
+
         public IWindowBuilder UseWindow(WindowBase window)
         {
             if (_windows.Select(window => window.GetFullName()).Any(windowName => windowName == window.GetFullName()))
@@ -67,7 +74,7 @@ namespace TelegramLibrary.Builders
             return this;
         }
 
-        public ITelegramService GetService()
+        public async Task<ITelegramService> GetService()
         {
             this.UseMainControls()
                 .UseCommandControl("start", (o, e) => e.TelegramInteractor.SendStartWindow())
@@ -75,6 +82,10 @@ namespace TelegramLibrary.Builders
             var repositoryFactory = new RepositoriesFactory(_dbConfigurationAction);
             var service = new TelegramService(_url, _token, repositoryFactory, _initialWindow);
             service.RegisterWindows(this._windows.Distinct().ToArray());
+            if (_registerCommands)
+            {
+                await service.RegisterCommands();
+            }
             return service;
         }
     }

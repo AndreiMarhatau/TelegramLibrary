@@ -11,10 +11,12 @@ namespace TelegramLibrary.Models.MainControls
     internal class Command : MainControlBase, IPositionalControl
     {
         private string _command;
+        private string _description;
 
         internal string CommandText => _command;
+        internal string Description => _description;
 
-        internal Command(string command)
+        internal Command(string command, string description)
         {
             if (!command.StartsWith('/'))
             {
@@ -24,6 +26,7 @@ namespace TelegramLibrary.Models.MainControls
             {
                 this._command = command.Trim();
             }
+            _description = description;
         }
 
         internal override bool IsAbleToProceed(Update update)

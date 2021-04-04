@@ -15,8 +15,9 @@ namespace TelegramLibrary.Builders
         ITelegramServiceBuilder UseDbConfiguration(Action<DbContextOptionsBuilder> action);
         IMainControlBuilder UseMainControls();
         ITelegramServiceBuilder SaveMainControls(IEnumerable<MainControlBase> controls);
+        ITelegramServiceBuilder RegisterCommands();
         IWindowBuilder UseWindow(WindowBase window);
         ITelegramServiceBuilder SaveWindow(WindowBase window);
-        ITelegramService GetService();
+        Task<ITelegramService> GetService();
     }
 }

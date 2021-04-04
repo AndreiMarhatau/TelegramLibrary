@@ -7,32 +7,32 @@ using TelegramLibrary.Models;
 
 namespace TelegramLibrary.Builders
 {
-    public class WindowBuilder : IWindowBuilder
+    public class WindowBuilder : IWindowPropertiesSaver
     {
-        private ITelegramServiceBuilder _telegramServiceBuilder;
+        private ITelegramServicePropertiesSaver _telegramServiceBuilder;
         private WindowBase _window;
 
-        internal WindowBuilder(ITelegramServiceBuilder telegramServiceBuilder, WindowBase window)
+        internal WindowBuilder(ITelegramServicePropertiesSaver telegramServiceBuilder, WindowBase window)
         {
             this._telegramServiceBuilder = telegramServiceBuilder;
             this._window = window;
         }
 
-        IWindowBuilder IWindowBuilder.SaveMessage(Message message)
+        IWindowBuilder IWindowPropertiesSaver.SaveMessage(Message message)
         {
             _window.Messages.Add(message);
             return this;
         }
 
-        IWindowBuilder IWindowBuilder.SaveWindowControls(IEnumerable<WindowControlBase> controls)
+        IWindowBuilder IWindowPropertiesSaver.SaveWindowControls(IEnumerable<WindowControlBase> controls)
         {
             _window.Controls = _window.Controls.Concat(controls);
             return this;
         }
 
-        public IMessageBuilder UseMessage(string text)
+        public IMessageBuilder UseMessage()
         {
-            return new MessageBuilder(this, text);
+            return new MessageBuilder(this);
         }
 
         public IWindowControlBuilder UseWindowControls()

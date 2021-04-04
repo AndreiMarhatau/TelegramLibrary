@@ -9,7 +9,7 @@ using TelegramLibrary.Repositories;
 
 namespace TelegramLibrary.Builders
 {
-    public class TelegramServiceBuilder: ITelegramServiceBuilder
+    public class TelegramServiceBuilder: ITelegramServicePropertiesSaver
     {
         private string _token;
         private string _url;
@@ -43,7 +43,7 @@ namespace TelegramLibrary.Builders
             return new MainControlBuilder(this);
         }
 
-        ITelegramServiceBuilder ITelegramServiceBuilder.SaveMainControls(IEnumerable<MainControlBase> controls)
+        ITelegramServiceBuilder ITelegramServicePropertiesSaver.SaveMainControls(IEnumerable<MainControlBase> controls)
         {
             LibraryStaticContext.Storage.Controls = LibraryStaticContext.Storage.Controls.Concat(controls);
             return this;
@@ -64,7 +64,7 @@ namespace TelegramLibrary.Builders
             return new WindowBuilder(this, window);
         }
 
-        ITelegramServiceBuilder ITelegramServiceBuilder.SaveWindow(WindowBase window)
+        ITelegramServiceBuilder ITelegramServicePropertiesSaver.SaveWindow(WindowBase window)
         {
             _windows.Add(window);
             if(_initialWindow == null)

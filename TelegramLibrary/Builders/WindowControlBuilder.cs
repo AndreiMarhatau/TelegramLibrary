@@ -12,11 +12,11 @@ namespace TelegramLibrary.Builders
 {
     public class WindowControlBuilder : IWindowControlBuilder
     {
-        private IWindowBuilder _windowBuilder;
+        private IWindowPropertiesSaver _windowBuilder;
 
         private List<WindowControlBase> _controls = new List<WindowControlBase>();
 
-        internal WindowControlBuilder(IWindowBuilder windowBuilder)
+        internal WindowControlBuilder(IWindowPropertiesSaver windowBuilder)
         {
             this._windowBuilder = windowBuilder;
         }

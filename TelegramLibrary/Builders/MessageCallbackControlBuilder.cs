@@ -11,10 +11,10 @@ namespace TelegramLibrary.Builders
 {
     public class MessageCallbackControlBuilder : IMessageCallbackControlBuilder
     {
-        private IMessageBuilder _telegramMessageBuilder;
+        private IMessagePropertiesSaver _telegramMessageBuilder;
         private List<List<IPositionalControl>> _positionalControls = new List<List<IPositionalControl>>();
 
-        internal MessageCallbackControlBuilder(IMessageBuilder telegramMessageBuilder)
+        internal MessageCallbackControlBuilder(IMessagePropertiesSaver telegramMessageBuilder)
         {
             this._telegramMessageBuilder = telegramMessageBuilder;
         }

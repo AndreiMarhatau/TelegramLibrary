@@ -7,17 +7,15 @@ using TelegramLibrary.Models;
 
 namespace TelegramLibrary.Builders
 {
-    public class MessageBuilder : IMessageBuilder
+    public class MessageBuilder : IMessagePropertiesSaver
     {
-        private string _text;
-        private IWindowBuilder _windowBuilder;
+        private IWindowPropertiesSaver _windowBuilder;
         private Message _message;
 
-        internal MessageBuilder(IWindowBuilder windowBuilder, string text)
+        internal MessageBuilder(IWindowPropertiesSaver windowBuilder)
         {
-            this._text = text;
             this._windowBuilder = windowBuilder;
-            this._message = new Message() { Text = _text };
+            this._message = new Message();
         }
 
         public IMessageKeyboardControlBuilder UseKeyboardControls()
@@ -30,7 +28,7 @@ namespace TelegramLibrary.Builders
             return new MessageCallbackControlBuilder(this);
         }
 
-        IMessageBuilder IMessageBuilder.SaveControls(IEnumerable<IEnumerable<IPositionalControl>> positionalControls)
+        IMessageBuilder IMessagePropertiesSaver.SaveControls(IEnumerable<IEnumerable<IPositionalControl>> positionalControls)
         {
             _message.PositionalControls = positionalControls;
             return this;
@@ -38,7 +36,23 @@ namespace TelegramLibrary.Builders
 
         public IWindowBuilder SaveMessage()
         {
+            if (String.IsNullOrEmpty(this._message.Text))
+            {
+                throw new InvalidOperationException("Message text must be fulfilled");
+            }
             return _windowBuilder.SaveMessage(this._message);
+        }
+
+        public IMessageBuilder UseText(string text)
+        {
+            this._message.Text = text;
+            return this;
+        }
+
+        public IMessageBuilder SetIsGlobalHandlers(bool isGlobal)
+        {
+            this._message.IsGlobal = isGlobal;
+            return this;
         }
     }
 }

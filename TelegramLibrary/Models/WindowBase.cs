@@ -23,9 +23,10 @@ namespace TelegramLibrary.Models
             return Controls.FirstOrDefault(control => control.IsAbleToProceed(update));
         }
 
-        internal MessageControlBase FindMessageHandlingControl(Update update)
+        internal MessageControlBase FindMessageHandlingControl(Update update, bool isGlobal = false)
         {
             var positionalControls = Messages
+                .Where(message => message.IsGlobal == isGlobal)
                 .SelectMany(msgs => msgs.PositionalControls)
                 .SelectMany(controls => controls.Select(control => control as MessageControlBase));
             return positionalControls

@@ -11,10 +11,10 @@ namespace TelegramLibrary.Builders
 {
     public class MainControlBuilder : IMainControlBuilder
     {
-        private ITelegramServiceBuilder _telegramServiceBuilder;
+        private ITelegramServicePropertiesSaver _telegramServiceBuilder;
         private List<MainControlBase> _controls = new List<MainControlBase>();
 
-        internal MainControlBuilder(ITelegramServiceBuilder telegramServiceBuilder)
+        internal MainControlBuilder(ITelegramServicePropertiesSaver telegramServiceBuilder)
         {
             this._telegramServiceBuilder = telegramServiceBuilder;
         }

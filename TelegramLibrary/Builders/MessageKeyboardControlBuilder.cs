@@ -11,10 +11,10 @@ namespace TelegramLibrary.Builders
 {
     public class MessageKeyboardControlBuilder : IMessageKeyboardControlBuilder
     {
-        private IMessageBuilder _telegramMessageBuilder;
+        private IMessagePropertiesSaver _telegramMessageBuilder;
         private List<List<IPositionalControl>> _positionalControls = new List<List<IPositionalControl>>();
 
-        internal MessageKeyboardControlBuilder(IMessageBuilder telegramMessageBuilder)
+        internal MessageKeyboardControlBuilder(IMessagePropertiesSaver telegramMessageBuilder)
         {
             this._telegramMessageBuilder = telegramMessageBuilder;
         }

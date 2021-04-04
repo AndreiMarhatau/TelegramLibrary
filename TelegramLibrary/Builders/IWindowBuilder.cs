@@ -9,10 +9,14 @@ namespace TelegramLibrary.Builders
 {
     public interface IWindowBuilder
     {
-        IMessageBuilder UseMessage(string text);
-        IWindowBuilder SaveMessage(Message message);
+        IMessageBuilder UseMessage();
         IWindowControlBuilder UseWindowControls();
-        IWindowBuilder SaveWindowControls(IEnumerable<WindowControlBase> controls);
         ITelegramServiceBuilder SaveWindow();
+    }
+
+    public interface IWindowPropertiesSaver: IWindowBuilder
+    {
+        IWindowBuilder SaveMessage(Message message);
+        IWindowBuilder SaveWindowControls(IEnumerable<WindowControlBase> controls);
     }
 }

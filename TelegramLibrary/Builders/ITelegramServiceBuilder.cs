@@ -14,10 +14,14 @@ namespace TelegramLibrary.Builders
         ITelegramServiceBuilder UseWebHookUrl(string url);
         ITelegramServiceBuilder UseDbConfiguration(Action<DbContextOptionsBuilder> action);
         IMainControlBuilder UseMainControls();
-        ITelegramServiceBuilder SaveMainControls(IEnumerable<MainControlBase> controls);
         ITelegramServiceBuilder RegisterCommands();
         IWindowBuilder UseWindow(WindowBase window);
-        ITelegramServiceBuilder SaveWindow(WindowBase window);
         Task<ITelegramService> GetService();
+    }
+
+    public interface ITelegramServicePropertiesSaver: ITelegramServiceBuilder
+    {
+        ITelegramServiceBuilder SaveMainControls(IEnumerable<MainControlBase> controls);
+        ITelegramServiceBuilder SaveWindow(WindowBase window);
     }
 }

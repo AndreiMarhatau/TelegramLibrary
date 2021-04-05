@@ -25,7 +25,7 @@ namespace TelegramLibrary.Builders
             return this;
         }
 
-        public IMessageCallbackControlBuilder UseCallbackButtonControl(string text, string data, EventHandler<ControlHandlingEventArgs> handler, TimeSpan? limiterDelay = null)
+        public IMessageCallbackControlBuilder UseCallbackButtonControl(string text, string data, EventHandler<ControlHandlingEventArgs> handler, TimeSpan? limiterDelay = null, EventHandler<ControlHandlingEventArgs> onReleaseLimiterHandler = null)
         {
             var control = new CallbackButton(text, data);
             control.HandleEvent += handler;
@@ -33,7 +33,7 @@ namespace TelegramLibrary.Builders
 
             if (limiterDelay.HasValue)
             {
-                (control as ILimitable).Limiter = new ConnectionLimiter(limiterDelay.Value);
+                (control as ILimitable).Limiter = new ConnectionLimiter(limiterDelay.Value, onReleaseLimiterHandler);
             }
 
             return this;

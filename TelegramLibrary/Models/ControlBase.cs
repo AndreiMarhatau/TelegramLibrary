@@ -29,7 +29,7 @@ namespace TelegramLibrary.Models
             }
             finally
             {
-                (this as ILimitable).Limiter?.Release(telegramInteractor.User.Id);
+                (this as ILimitable).Limiter?.Release(telegramInteractor.User.Id, telegramInteractor);
             }
         }
     }

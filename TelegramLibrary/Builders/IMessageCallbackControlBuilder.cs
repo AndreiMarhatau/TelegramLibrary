@@ -10,7 +10,7 @@ namespace TelegramLibrary.Builders
     public interface IMessageCallbackControlBuilder
     {
         IMessageCallbackControlBuilder CreateRow();
-        IMessageCallbackControlBuilder UseCallbackButtonControl(string text, string data, EventHandler<ControlHandlingEventArgs> handler, TimeSpan? limiterDelay = null);
+        IMessageCallbackControlBuilder UseCallbackButtonControl(string text, string data, EventHandler<ControlHandlingEventArgs> handler, TimeSpan? limiterDelay = null, EventHandler<ControlHandlingEventArgs> onReleaseLimiterHandler = null);
         IMessageBuilder SaveControls();
     }
 }

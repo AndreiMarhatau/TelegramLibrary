@@ -53,12 +53,14 @@ namespace TelegramLibrary
                 return;
             }
 
+            ITelegramInteractor telegramInteractor = null;
+
             try
             {
                 IUserRepository userRepository = _getRepository();
                 UserModel user = await userRepository.GetOrCreateUser(update.GetFrom().Id, _initialWindow.GetFullName());
                 var window = _storage.RegisteredWindows.First(window => window.GetFullName().Equals(user.LastWindow));
-                var telegramInteractor = new TelegramInteractor(_telegramBotClient, update, user, _initialWindow, _storage, userRepository);
+                telegramInteractor = new TelegramInteractor(_telegramBotClient, update, user, _initialWindow, _storage, userRepository);
 
                 var mainControl = _storage.FindHandlingControl(update);
 
@@ -94,7 +96,7 @@ namespace TelegramLibrary
             }
             finally
             {
-                _limiter?.Release(update.GetFrom().Id);
+                _limiter?.Release(update.GetFrom().Id, telegramInteractor);
             }
         }
     }

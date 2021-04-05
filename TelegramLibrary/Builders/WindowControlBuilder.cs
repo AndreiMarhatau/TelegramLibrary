@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using TelegramLibrary.Models;
 using TelegramLibrary.Models.ArgsForEvents;
 using TelegramLibrary.Models.WindowControls;
-using TelegramLibrary.Models.WindowControls;
 
 namespace TelegramLibrary.Builders
 {
@@ -21,7 +20,7 @@ namespace TelegramLibrary.Builders
             this._windowBuilder = windowBuilder;
         }
 
-        public IWindowControlBuilder UseTextInputControl(EventHandler<ControlHandlingEventArgs> handler, TimeSpan? limiterDelay = null)
+        public IWindowControlBuilder UseTextInputControl(EventHandler<ControlHandlingEventArgs> handler, TimeSpan? limiterDelay = null, EventHandler<ControlHandlingEventArgs> onReleaseLimiterHandler = null)
         {
             var control = new TextInput();
 
@@ -35,7 +34,7 @@ namespace TelegramLibrary.Builders
 
             if (limiterDelay.HasValue)
             {
-                (control as ILimitable).Limiter = new ConnectionLimiter(limiterDelay.Value);
+                (control as ILimitable).Limiter = new ConnectionLimiter(limiterDelay.Value, onReleaseLimiterHandler);
             }
 
             return this;

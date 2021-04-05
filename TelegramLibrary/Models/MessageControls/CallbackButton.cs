@@ -24,7 +24,8 @@ namespace TelegramLibrary.Models.WindowControls
 
         internal override bool IsAbleToProceed(Update update)
         {
-            return update.Type == Telegram.Bot.Types.Enums.UpdateType.CallbackQuery && update.CallbackQuery.Data == _data;
+            return update.Type == Telegram.Bot.Types.Enums.UpdateType.CallbackQuery &&
+                update.CallbackQuery.Data == _data;
         }
     }
 }

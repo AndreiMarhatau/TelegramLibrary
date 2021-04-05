@@ -22,7 +22,30 @@ namespace TelegramLibrary.Builders
 
         public IWindowControlBuilder UseTextInputControl(EventHandler<ControlHandlingEventArgs> handler, TimeSpan? limiterDelay = null, EventHandler<ControlHandlingEventArgs> onReleaseLimiterHandler = null)
         {
-            var control = new TextInput();
+            AddControl<TextInput>(handler, limiterDelay, onReleaseLimiterHandler);
+            return this;
+        }
+
+        public IWindowBuilder SaveControls()
+        {
+            return this._windowBuilder.SaveWindowControls(_controls);
+        }
+
+        public IWindowControlBuilder UsePhotoInputControl(EventHandler<ControlHandlingEventArgs> handler, TimeSpan? limiterDelay = null, EventHandler<ControlHandlingEventArgs> onReleaseLimiterHandler = null)
+        {
+            AddControl<PhotoInput>(handler, limiterDelay, onReleaseLimiterHandler);
+            return this;
+        }
+
+        public IWindowControlBuilder UseVideoInputControl(EventHandler<ControlHandlingEventArgs> handler, TimeSpan? limiterDelay = null, EventHandler<ControlHandlingEventArgs> onReleaseLimiterHandler = null)
+        {
+            AddControl<VideoInput>(handler, limiterDelay, onReleaseLimiterHandler);
+            return this;
+        }
+
+        private void AddControl<T>(EventHandler<ControlHandlingEventArgs> handler, TimeSpan? limiterDelay = null, EventHandler<ControlHandlingEventArgs> onReleaseLimiterHandler = null) where T: WindowControlBase, new()
+        {
+            var control = new T();
 
             if (_controls.Any(control => control.GetType() == control.GetType()))
             {
@@ -36,13 +59,6 @@ namespace TelegramLibrary.Builders
             {
                 (control as ILimitable).Limiter = new ConnectionLimiter(limiterDelay.Value, onReleaseLimiterHandler);
             }
-
-            return this;
-        }
-
-        public IWindowBuilder SaveControls()
-        {
-            return this._windowBuilder.SaveWindowControls(_controls);
         }
     }
 }

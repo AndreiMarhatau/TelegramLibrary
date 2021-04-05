@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Telegram.Bot.Types;
+using TelegramLibrary.Extensions;
 using TelegramLibrary.Models.ArgsForEvents;
 
 namespace TelegramLibrary.Models.WindowControls
@@ -21,7 +22,9 @@ namespace TelegramLibrary.Models.WindowControls
 
         internal override bool IsAbleToProceed(Update update)
         {
-            return update.Type == Telegram.Bot.Types.Enums.UpdateType.Message && update.Message.Type == Telegram.Bot.Types.Enums.MessageType.Text && update.Message.Text == _name;
+            return update.Type == Telegram.Bot.Types.Enums.UpdateType.Message &&
+                update.GetMessage().Type == Telegram.Bot.Types.Enums.MessageType.Text &&
+                update.Message.Text == _name;
         }
     }
 }

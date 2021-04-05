@@ -25,9 +25,9 @@ namespace TelegramLibrary.Builders
             return this;
         }
 
-        public IMessageCallbackControlBuilder UseCallbackButtonControl(string text, string data, EventHandler<ControlHandlingEventArgs> handler, TimeSpan? limiterDelay = null, EventHandler<ControlHandlingEventArgs> onReleaseLimiterHandler = null)
+        public IMessageCallbackControlBuilder UseCallbackButtonControl(string text, string callbackData, EventHandler<ControlHandlingEventArgs> handler, TimeSpan? limiterDelay = null, EventHandler<ControlHandlingEventArgs> onReleaseLimiterHandler = null)
         {
-            var control = new CallbackButton(text, data);
+            var control = new CallbackButton(text, callbackData);
             control.HandleEvent += handler;
             _positionalControls.Last().Add(control);
 
@@ -37,6 +37,11 @@ namespace TelegramLibrary.Builders
             }
 
             return this;
+        }
+
+        public IMessageCallbackControlBuilder UseCallbackButtonControl(string text, EventHandler<ControlHandlingEventArgs> handler, TimeSpan? limiterDelay = null, EventHandler<ControlHandlingEventArgs> onReleaseLimiterHandler = null)
+        {
+            return UseCallbackButtonControl(text, Guid.NewGuid().ToString(), handler, limiterDelay, onReleaseLimiterHandler);
         }
 
         public IMessageBuilder SaveControls()

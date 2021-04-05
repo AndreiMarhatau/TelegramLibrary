@@ -32,7 +32,7 @@ namespace TelegramLibrary.Models.MainControls
 
         internal override bool IsAbleToProceed(Update update)
         {
-            return update.Type == Telegram.Bot.Types.Enums.UpdateType.Message && update.GetMessage().Text.Split().First().Equals(this._command, StringComparison.OrdinalIgnoreCase);
+            return update.GetMessage().Type == Telegram.Bot.Types.Enums.MessageType.Text && update.GetMessage().Text.Split().First().Equals(this._command, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

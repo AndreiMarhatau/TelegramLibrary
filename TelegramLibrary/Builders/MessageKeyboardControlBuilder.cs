@@ -43,5 +43,17 @@ namespace TelegramLibrary.Builders
         {
             return this._telegramMessageBuilder.SaveControls(_positionalControls);
         }
+
+        public IMessageKeyboardControlBuilder RequestPhoneNumber()
+        {
+            (_positionalControls.Last().Last() as KeyboardButton).RequestPhoneNumber = true;
+            return this;
+        }
+
+        public IMessageKeyboardControlBuilder RequestLocation()
+        {
+            (_positionalControls.Last().Last() as KeyboardButton).RequestLocation = true;
+            return this;
+        }
     }
 }

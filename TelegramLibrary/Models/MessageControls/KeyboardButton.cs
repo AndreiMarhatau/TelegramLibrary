@@ -15,6 +15,10 @@ namespace TelegramLibrary.Models.WindowControls
 
         internal string Name => _name;
 
+        internal bool RequestPhoneNumber { get; set; }
+        internal bool RequestLocation { get; set; }
+        internal bool RequestPoll { get; set; }
+
         internal KeyboardButton(string name)
         {
             this._name = name;

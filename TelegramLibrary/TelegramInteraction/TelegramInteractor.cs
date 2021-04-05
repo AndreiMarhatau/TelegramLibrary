@@ -26,6 +26,8 @@ namespace TelegramLibrary.TelegramInteraction
         public Telegram.Bot.Types.Message Message => _update.GetMessage();
         public UserModel User => _user;
 
+        public ITelegramBotClient TelegramBotClient => _telegramBotClient;
+
         internal TelegramInteractor(TelegramBotClient telegramBotClient, Update update, UserModel user, WindowBase initialWindow, Storage storage, IUserRepository userRepository)
         {
             this._telegramBotClient = telegramBotClient;

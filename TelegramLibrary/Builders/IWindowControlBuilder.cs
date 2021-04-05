@@ -12,6 +12,8 @@ namespace TelegramLibrary.Builders
         IWindowControlBuilder UseTextInputControl(EventHandler<ControlHandlingEventArgs> handler, TimeSpan? limiterDelay = null, EventHandler<ControlHandlingEventArgs> onReleaseLimiterHandler = null);
         IWindowControlBuilder UsePhotoInputControl(EventHandler<ControlHandlingEventArgs> handler, TimeSpan? limiterDelay = null, EventHandler<ControlHandlingEventArgs> onReleaseLimiterHandler = null);
         IWindowControlBuilder UseVideoInputControl(EventHandler<ControlHandlingEventArgs> handler, TimeSpan? limiterDelay = null, EventHandler<ControlHandlingEventArgs> onReleaseLimiterHandler = null);
+        IWindowControlBuilder UseContactInputControl(EventHandler<ControlHandlingEventArgs> handler, TimeSpan? limiterDelay = null, EventHandler<ControlHandlingEventArgs> onReleaseLimiterHandler = null);
+        IWindowControlBuilder UseLocationInputControl(EventHandler<ControlHandlingEventArgs> handler, TimeSpan? limiterDelay = null, EventHandler<ControlHandlingEventArgs> onReleaseLimiterHandler = null);
         IWindowBuilder SaveControls();
     }
 }

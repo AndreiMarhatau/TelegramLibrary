@@ -11,7 +11,7 @@ namespace TelegramLibrary.TelegramInteraction.Converters
     {
         internal static KeyboardButton ToTelegramControl(this Models.WindowControls.KeyboardButton button)
         {
-            return new KeyboardButton(button.Name);
+            return new KeyboardButton(button.Name) { RequestContact = button.RequestPhoneNumber, RequestLocation = button.RequestLocation };
         }
 
         internal static InlineKeyboardButton ToTelegramControl(this Models.WindowControls.CallbackButton button)

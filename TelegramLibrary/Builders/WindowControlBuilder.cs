@@ -60,5 +60,17 @@ namespace TelegramLibrary.Builders
                 (control as ILimitable).Limiter = new ConnectionLimiter(limiterDelay.Value, onReleaseLimiterHandler);
             }
         }
+
+        public IWindowControlBuilder UseContactInputControl(EventHandler<ControlHandlingEventArgs> handler, TimeSpan? limiterDelay = null, EventHandler<ControlHandlingEventArgs> onReleaseLimiterHandler = null)
+        {
+            AddControl<ContactInput>(handler, limiterDelay, onReleaseLimiterHandler);
+            return this;
+        }
+
+        public IWindowControlBuilder UseLocationInputControl(EventHandler<ControlHandlingEventArgs> handler, TimeSpan? limiterDelay = null, EventHandler<ControlHandlingEventArgs> onReleaseLimiterHandler = null)
+        {
+            AddControl<LocationInput>(handler, limiterDelay, onReleaseLimiterHandler);
+            return this;
+        }
     }
 }

@@ -11,6 +11,8 @@ namespace TelegramLibrary.Builders
     {
         IMessageKeyboardControlBuilder CreateRow();
         IMessageKeyboardControlBuilder UseKeyboardButtonControl(string text, EventHandler<ControlHandlingEventArgs> handler, TimeSpan? limiterDelay = null, EventHandler<ControlHandlingEventArgs> onReleaseLimiterHandler = null);
+        IMessageKeyboardControlBuilder RequestPhoneNumber();
+        IMessageKeyboardControlBuilder RequestLocation();
         IMessageBuilder SaveControls();
     }
 }

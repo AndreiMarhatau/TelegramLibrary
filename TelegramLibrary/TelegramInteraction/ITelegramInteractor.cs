@@ -12,6 +12,7 @@ namespace TelegramLibrary.TelegramInteraction
     {
         Telegram.Bot.Types.Message Message { get; }
         UserModel User { get; }
+        Telegram.Bot.ITelegramBotClient TelegramBotClient { get; }
 
         Task SendWindow(Type type);
         Task SendText(string text);

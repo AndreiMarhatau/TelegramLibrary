@@ -25,11 +25,17 @@ namespace TelegramLibrary.Builders
             return this;
         }
 
-        public IMessageCallbackControlBuilder UseCallbackButtonControl(string text, string data, EventHandler<ControlHandlingEventArgs> handler)
+        public IMessageCallbackControlBuilder UseCallbackButtonControl(string text, string data, EventHandler<ControlHandlingEventArgs> handler, TimeSpan? limiterDelay = null)
         {
             var control = new CallbackButton(text, data);
             control.HandleEvent += handler;
             _positionalControls.Last().Add(control);
+
+            if (limiterDelay.HasValue)
+            {
+                (control as ILimitable).Limiter = new ConnectionLimiter(limiterDelay.Value);
+            }
+
             return this;
         }
 

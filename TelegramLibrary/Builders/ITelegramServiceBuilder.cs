@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TelegramLibrary.Models;
+using TelegramLibrary.Repositories.UserRepo;
 
 namespace TelegramLibrary.Builders
 {
@@ -12,7 +13,7 @@ namespace TelegramLibrary.Builders
     {
         ITelegramServiceBuilder UseToken(string botToken);
         ITelegramServiceBuilder UseWebHookUrl(string url);
-        ITelegramServiceBuilder UseDbConfiguration(Action<DbContextOptionsBuilder> action);
+        ITelegramServiceBuilder UseRepository(Func<IUserRepository> getRepository);
         IMainControlBuilder UseMainControls();
         ITelegramServiceBuilder RegisterCommands();
         IWindowBuilder UseWindow(WindowBase window);

@@ -9,6 +9,6 @@ namespace TelegramLibrary.Models
     public class UserModel
     {
         public int Id { get; set; }
-        internal WindowBase WindowBase { get; set; }
+        public string LastWindow { get; set; }
     }
 }

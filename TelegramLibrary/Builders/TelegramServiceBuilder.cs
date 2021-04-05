@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TelegramLibrary.Models;
 using TelegramLibrary.Repositories;
+using TelegramLibrary.Repositories.UserRepo;
 
 namespace TelegramLibrary.Builders
 {
@@ -13,11 +14,11 @@ namespace TelegramLibrary.Builders
     {
         private string _token;
         private string _url;
-        private Action<DbContextOptionsBuilder> _dbConfigurationAction;
         private List<WindowBase> _windows = new List<WindowBase>();
         private WindowBase _initialWindow;
         private bool _registerCommands = false;
         private IConnectionLimiter _limiter;
+        private Func<IUserRepository> _getRepository;
 
         public TelegramServiceBuilder() { }
 
@@ -33,9 +34,9 @@ namespace TelegramLibrary.Builders
             return this;
         }
 
-        public ITelegramServiceBuilder UseDbConfiguration(Action<DbContextOptionsBuilder> action)
+        public ITelegramServiceBuilder UseRepository(Func<IUserRepository> getRepository)
         {
-            this._dbConfigurationAction = action;
+            this._getRepository = getRepository;
             return this;
         }
 
@@ -91,8 +92,7 @@ namespace TelegramLibrary.Builders
             this.UseMainControls()
                 .UseCommandControl("start", (o, e) => e.TelegramInteractor.SendStartWindow())
             .SaveControls();
-            var repositoryFactory = new RepositoriesFactory(_dbConfigurationAction);
-            var service = new TelegramService(_url, _token, repositoryFactory, _initialWindow, _limiter);
+            var service = new TelegramService(_url, _token, _getRepository, _initialWindow, _limiter);
             service.RegisterWindows(this._windows.Distinct().ToArray());
             if (_registerCommands)
             {

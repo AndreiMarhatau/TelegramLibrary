@@ -25,11 +25,17 @@ namespace TelegramLibrary.Builders
             return this;
         }
 
-        public IMessageKeyboardControlBuilder UseKeyboardButtonControl(string text, EventHandler<ControlHandlingEventArgs> handler)
+        public IMessageKeyboardControlBuilder UseKeyboardButtonControl(string text, EventHandler<ControlHandlingEventArgs> handler, TimeSpan? limiterDelay = null)
         {
             var control = new KeyboardButton(text);
             control.HandleEvent += handler;
             _positionalControls.Last().Add(control);
+
+            if (limiterDelay.HasValue)
+            {
+                (control as ILimitable).Limiter = new ConnectionLimiter(limiterDelay.Value);
+            }
+
             return this;
         }
 

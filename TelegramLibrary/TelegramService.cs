@@ -20,15 +20,15 @@ namespace TelegramLibrary
     {
         private Storage _storage = LibraryStaticContext.Storage;
         private TelegramBotClient _telegramBotClient;
-        private RepositoriesFactory _repositoriesFactory;
+        private Func<IUserRepository> _getRepository;
         private WindowBase _initialWindow;
         private IConnectionLimiter _limiter;
 
-        internal TelegramService(string webHookUrl, string botToken, RepositoriesFactory repositoriesFactory, WindowBase initialWindow, IConnectionLimiter _limiter)
+        internal TelegramService(string webHookUrl, string botToken, Func<IUserRepository> getRepository, WindowBase initialWindow, IConnectionLimiter _limiter)
         {
             this._telegramBotClient = new TelegramBotClient(botToken);
             this._telegramBotClient.SetWebhookAsync(webHookUrl);
-            this._repositoriesFactory = repositoriesFactory;
+            this._getRepository = getRepository;
             this._initialWindow = initialWindow;
             this._limiter = _limiter;
         }
@@ -55,9 +55,9 @@ namespace TelegramLibrary
 
             try
             {
-                IUserRepository userRepository = _repositoriesFactory.GetUserRepository();
+                IUserRepository userRepository = _getRepository();
                 UserModel user = await userRepository.GetOrCreateUser(update.GetFrom().Id, _initialWindow.GetFullName());
-                var window = user.WindowBase;
+                var window = _storage.RegisteredWindows.First(window => window.GetFullName().Equals(user.LastWindow));
                 var telegramInteractor = new TelegramInteractor(_telegramBotClient, update, user, _initialWindow, _storage, userRepository);
 
                 var mainControl = _storage.FindHandlingControl(update);

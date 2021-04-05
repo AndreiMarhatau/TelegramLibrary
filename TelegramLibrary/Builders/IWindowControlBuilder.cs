@@ -9,7 +9,7 @@ namespace TelegramLibrary.Builders
 {
     public interface IWindowControlBuilder
     {
-        IWindowControlBuilder UseTextInputControl(EventHandler<ControlHandlingEventArgs> handler);
+        IWindowControlBuilder UseTextInputControl(EventHandler<ControlHandlingEventArgs> handler, TimeSpan? limiterDelay = null);
         IWindowBuilder SaveControls();
     }
 }

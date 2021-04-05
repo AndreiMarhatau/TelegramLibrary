@@ -7,7 +7,7 @@ using TelegramLibrary.Models;
 
 namespace TelegramLibrary.Repositories.UserRepo
 {
-    internal interface IUserRepository
+    public interface IUserRepository
     {
         Task<UserModel> GetOrCreateUser(int id, string initialWindow);
         Task SetWindow(int id, string windowName);

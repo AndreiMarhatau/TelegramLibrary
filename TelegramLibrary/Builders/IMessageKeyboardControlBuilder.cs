@@ -10,7 +10,7 @@ namespace TelegramLibrary.Builders
     public interface IMessageKeyboardControlBuilder
     {
         IMessageKeyboardControlBuilder CreateRow();
-        IMessageKeyboardControlBuilder UseKeyboardButtonControl(string text, EventHandler<ControlHandlingEventArgs> handler);
+        IMessageKeyboardControlBuilder UseKeyboardButtonControl(string text, EventHandler<ControlHandlingEventArgs> handler, TimeSpan? limiterDelay = null);
         IMessageBuilder SaveControls();
     }
 }

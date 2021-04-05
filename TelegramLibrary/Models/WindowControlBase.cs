@@ -9,15 +9,7 @@ using TelegramLibrary.TelegramInteraction;
 
 namespace TelegramLibrary.Models
 {
-    public abstract class WindowControlBase
+    public abstract class WindowControlBase : ControlBase
     {
-        internal event EventHandler<ControlHandlingEventArgs> HandleEvent;
-
-        internal abstract bool IsAbleToProceed(Update update);
-
-        internal void Handle(ITelegramInteractor telegramInteractor)
-        {
-            HandleEvent(this, new ControlHandlingEventArgs(telegramInteractor));
-        }
     }
 }

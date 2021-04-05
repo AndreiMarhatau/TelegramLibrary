@@ -24,7 +24,7 @@ namespace TelegramLibrary.Builders
             return _telegramServiceBuilder.SaveMainControls(_controls);
         }
 
-        public IMainControlBuilder UseCommandControl(string command, EventHandler<ControlHandlingEventArgs> handler, string description = null)
+        public IMainControlBuilder UseCommandControl(string command, EventHandler<ControlHandlingEventArgs> handler, string description = null, TimeSpan? limiterDelay = null)
         {
             if (_controls.Any(control => (control as Command)?.CommandText == command))
             {
@@ -33,6 +33,11 @@ namespace TelegramLibrary.Builders
             var control = new Command(command, description);
             control.HandleEvent += handler;
             _controls.Add(control);
+
+            if(limiterDelay.HasValue)
+            {
+                (control as ILimitable).Limiter = new ConnectionLimiter(limiterDelay.Value);
+            }
             return this;
         }
     }

@@ -28,7 +28,7 @@ namespace Sample
                 // Tip: This is the token of bot that you will use
                 .UseToken("...")
                 // Tip: By default the library uses in-memory repository of users
-                // Tip: You can change this flow by using this method and class inherited from TelegramLibrary.Repositories.IUserRepository
+                // You can change this flow by using this method and class inherited from TelegramLibrary.Repositories.IUserRepository
                 //.UseRepository(() => getUserRepository)
                 // Tip: This returns a builder for constructing global handlers working in all windows
                 .UseMainControls()

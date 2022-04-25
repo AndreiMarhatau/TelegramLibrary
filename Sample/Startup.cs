@@ -29,9 +29,9 @@ namespace Sample
             services.AddSingleton<TelegramLibrary.ITelegramService>(services =>
                 new TelegramLibrary.Builders.TelegramServiceBuilder()
                 // This sets the webhook url where telegram will send updates
-                .UseWebHookUrl("https://679d-46-56-206-84.eu.ngrok.io/telegram/update")
+                .UseWebHookUrl(".../telegram/update")
                 // This is the token of bot that you will use
-                .UseToken("1654710052:AAGalH1UTr3VgT94ylvIqWdSRbc-WA0vFDg")
+                .UseToken("...")
                 // This is the registering of the repository for saving users with ids and windows
                 .UseRepository(() => new Sample.Models.UserRepositoryMock())
                 // This returns a builder for constructing global handlers working in all windows

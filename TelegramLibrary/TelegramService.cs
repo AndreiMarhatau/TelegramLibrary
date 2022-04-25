@@ -11,7 +11,6 @@ using TelegramLibrary.Internal;
 using TelegramLibrary.Repositories;
 using TelegramLibrary.Extensions;
 using TelegramLibrary.TelegramInteraction;
-using TelegramLibrary.Repositories.UserRepo;
 using TelegramLibrary.Models.MainControls;
 
 namespace TelegramLibrary
@@ -58,7 +57,7 @@ namespace TelegramLibrary
             try
             {
                 IUserRepository userRepository = _getRepository();
-                UserModel user = await userRepository.GetOrCreateUser(update.GetFrom().Id, _initialWindow.GetFullName());
+                UserModel user = await userRepository.GetOrCreateUserWithDefaultWindow(update.GetFrom().Id, _initialWindow.GetFullName());
                 var window = _storage.RegisteredWindows.First(window => window.GetFullName().Equals(user.LastWindow));
                 telegramInteractor = new TelegramInteractor(_telegramBotClient, update, user, _initialWindow, _storage, userRepository);
 

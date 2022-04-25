@@ -1,13 +1,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Sample
 {
@@ -28,29 +23,30 @@ namespace Sample
 
             services.AddSingleton<TelegramLibrary.ITelegramService>(services =>
                 new TelegramLibrary.Builders.TelegramServiceBuilder()
-                // This sets the webhook url where telegram will send updates
-                .UseWebHookUrl(".../telegram/update")
-                // This is the token of bot that you will use
+                // Tip: This sets the webhook url where telegram will send updates
+                .UseWebHookUrl("https://host.com/telegram/update")
+                // Tip: This is the token of bot that you will use
                 .UseToken("...")
-                // This is the registering of the repository for saving users with ids and windows
-                .UseRepository(() => new Sample.Models.UserRepositoryMock())
-                // This returns a builder for constructing global handlers working in all windows
+                // Tip: By default the library uses in-memory repository of users
+                // Tip: You can change this flow by using this method and class inherited from TelegramLibrary.Repositories.IUserRepository
+                //.UseRepository(() => getUserRepository)
+                // Tip: This returns a builder for constructing global handlers working in all windows
                 .UseMainControls()
                     .UseCommandControl("/start", (o, e) =>
                     {
                         e.TelegramInteractor.SendStartWindow();
                     })
-                    // To return to previous builder you should call method .Save...()
+                    // Tip: To return to previous builder you should call method .Save...()
                     .SaveControls()
-                // Creating initial window (initial because it's the first call of .UseWindow()
-                // To create others just call it as it's here)
+                // Tip: Creating initial window (initial because it's the first call of .UseWindow()
+                // Tip: To create others just call it as it's here)
                 .UseWindow(new Sample.Models.MainWindow())
-                    // Here you can create a message with text and (if you want) other controls (buttons, etc.)
+                        // Tip: Here you can create a message with text and (if you want) other controls (buttons, etc.)
                         .UseMessage()
                             .UseText("You're in main window!")
                         .SaveMessage()
                     .SaveWindow()
-                // It creates the service with specified above options
+                // Tip: It creates the service with specified above options
                 .GetService()
                 .Result
             );
@@ -80,8 +76,11 @@ namespace Sample
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Telegram}/{action=Up}");
+                    pattern: "{controller=Telegram}/{action=WarmUp}");
             });
+
+            // Tip: Warm up the app in order to create required services and register webhook
+            Sample.Extensions.WarmUpper.WarmUpApp();
         }
     }
 }

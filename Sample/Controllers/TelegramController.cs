@@ -18,7 +18,8 @@ namespace Sample.Controllers
             this._telegramService = telegramService;
         }
 
-        public IActionResult Up()
+        [Route("warmup")]
+        public IActionResult WarmUp()
         {
             return Ok();
         }

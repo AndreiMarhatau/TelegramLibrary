@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using TelegramLibrary.Models;
 using TelegramLibrary.Repositories;
-using TelegramLibrary.Repositories.UserRepo;
 
 namespace TelegramLibrary.Builders
 {
@@ -99,14 +98,14 @@ namespace TelegramLibrary.Builders
                 throw new InvalidOperationException("Bot token must be registered before this call.");
             }
 
-            if (_getRepository == null)
-            {
-                throw new InvalidOperationException("A class that implementing IUserRepository must be registered as a repository before this call.");
-            }
-
             if (_initialWindow == null)
             {
                 throw new InvalidOperationException("At least one window must be added before this call.");
+            }
+
+            if (_getRepository == null)
+            {
+                _getRepository = () => new PerRunUserRepository();
             }
 
             this.UseMainControls()

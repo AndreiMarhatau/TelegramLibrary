@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TelegramLibrary.Models;
-using TelegramLibrary.Repositories.UserRepo;
+using TelegramLibrary.Repositories;
 
 namespace TelegramLibrary.Builders
 {

@@ -9,7 +9,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 using TelegramLibrary.Extensions;
 using TelegramLibrary.Internal;
 using TelegramLibrary.Models;
-using TelegramLibrary.Repositories.UserRepo;
+using TelegramLibrary.Repositories;
 using TelegramLibrary.TelegramInteraction.Converters;
 
 namespace TelegramLibrary.TelegramInteraction

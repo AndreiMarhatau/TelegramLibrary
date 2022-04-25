@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using TelegramLibrary.Models;
 
-namespace TelegramLibrary.Repositories.UserRepo
+namespace TelegramLibrary.Repositories
 {
     public interface IUserRepository
     {
-        Task<UserModel> GetOrCreateUser(long id, string initialWindow);
+        Task<UserModel> GetOrCreateUserWithDefaultWindow(long id, string initialWindow);
         Task SetWindow(long id, string windowName);
     }
 }

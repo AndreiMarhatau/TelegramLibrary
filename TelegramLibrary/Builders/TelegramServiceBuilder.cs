@@ -89,6 +89,26 @@ namespace TelegramLibrary.Builders
 
         public async Task<ITelegramService> GetService()
         {
+            if (_url == null)
+            {
+                throw new InvalidOperationException("Webhook url must be registered before this call.");
+            }
+
+            if (_token == null)
+            {
+                throw new InvalidOperationException("Bot token must be registered before this call.");
+            }
+
+            if (_getRepository == null)
+            {
+                throw new InvalidOperationException("A class that implementing IUserRepository must be registered as a repository before this call.");
+            }
+
+            if (_initialWindow == null)
+            {
+                throw new InvalidOperationException("At least one window must be added before this call.");
+            }
+
             this.UseMainControls()
                 .UseCommandControl("start", (o, e) => e.TelegramInteractor.SendStartWindow())
             .SaveControls();

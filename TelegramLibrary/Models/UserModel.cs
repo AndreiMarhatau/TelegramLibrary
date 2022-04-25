@@ -8,7 +8,7 @@ namespace TelegramLibrary.Models
 {
     public class UserModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string LastWindow { get; set; }
     }
 }

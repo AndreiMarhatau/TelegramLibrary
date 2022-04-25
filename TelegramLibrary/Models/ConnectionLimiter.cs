@@ -13,7 +13,7 @@ namespace TelegramLibrary.Models
     {
         private TimeSpan _delay;
         private EventHandler<ControlHandlingEventArgs> _onRelease;
-        private List<int> _capturedUsers = new List<int>();
+        private List<long> _capturedUsers = new List<long>();
         private object _lock = new object();
 
         public ConnectionLimiter(TimeSpan delay, EventHandler<ArgsForEvents.ControlHandlingEventArgs> onReleaseLimiterHandler)
@@ -22,7 +22,7 @@ namespace TelegramLibrary.Models
             this._onRelease = onReleaseLimiterHandler;
         }
 
-        public bool TryCapture(int id)
+        public bool TryCapture(long id)
         {
             if (!_capturedUsers.Any(userId => userId == id))
             {
@@ -38,7 +38,7 @@ namespace TelegramLibrary.Models
             return false;
         }
 
-        public void Release(int id, ITelegramInteractor telegramInteractor)
+        public void Release(long id, ITelegramInteractor telegramInteractor)
         {
             Task.Run(async () =>
             {

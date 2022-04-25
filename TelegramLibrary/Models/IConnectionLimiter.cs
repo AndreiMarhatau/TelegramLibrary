@@ -9,7 +9,7 @@ namespace TelegramLibrary.Models
 {
     public interface IConnectionLimiter
     {
-        bool TryCapture(int id);
-        void Release(int id, ITelegramInteractor telegramInteractor);
+        bool TryCapture(long id);
+        void Release(long id, ITelegramInteractor telegramInteractor);
     }
 }

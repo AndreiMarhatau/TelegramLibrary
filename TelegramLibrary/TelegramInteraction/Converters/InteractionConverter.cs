@@ -16,7 +16,7 @@ namespace TelegramLibrary.TelegramInteraction.Converters
 
         internal static InlineKeyboardButton ToTelegramControl(this Models.WindowControls.CallbackButton button)
         {
-            return new InlineKeyboardButton() { Text = button.Text, CallbackData = button.Data };
+            return new InlineKeyboardButton(button.Text) { CallbackData = button.Data };
         }
     }
 }

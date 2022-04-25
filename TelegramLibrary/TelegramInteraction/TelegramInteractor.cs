@@ -71,7 +71,8 @@ namespace TelegramLibrary.TelegramInteraction
                             controlRow
                             .Select(control =>
                                 (control as Models.WindowControls.KeyboardButton)
-                                .ToTelegramControl())), resizeKeyboard: true) : null;
+                                .ToTelegramControl())))
+                    { ResizeKeyboard = true } : null;
                 }
                 await _telegramBotClient.SendTextMessageAsync(_update.GetMessage().Chat.Id, message.Text, replyMarkup: replyMarkup);
                 await _userRepository.SetWindow(_user.Id, window.GetFullName());

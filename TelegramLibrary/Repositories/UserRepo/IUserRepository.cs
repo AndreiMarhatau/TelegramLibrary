@@ -9,7 +9,7 @@ namespace TelegramLibrary.Repositories.UserRepo
 {
     public interface IUserRepository
     {
-        Task<UserModel> GetOrCreateUser(int id, string initialWindow);
-        Task SetWindow(int id, string windowName);
+        Task<UserModel> GetOrCreateUser(long id, string initialWindow);
+        Task SetWindow(long id, string windowName);
     }
 }

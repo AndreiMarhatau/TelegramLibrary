@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TelegramLibrary.Models.WindowControls;
 
 namespace Sample
 {
@@ -24,9 +25,9 @@ namespace Sample
             services.AddSingleton<TelegramLibrary.ITelegramService>(services =>
                 new TelegramLibrary.Builders.TelegramServiceBuilder()
                 // Tip: This sets the webhook url where telegram will send updates
-                .UseWebHookUrl("https://host.com/telegram/update")
+                .UseWebHookUrl("https://97df-46-56-206-84.eu.ngrok.io/telegram/update")
                 // Tip: This is the token of bot that you will use
-                .UseToken("...")
+                .UseToken("1654710052:AAGalH1UTr3VgT94ylvIqWdSRbc-WA0vFDg")
                 // Tip: By default the library uses in-memory repository of users
                 // You can change this flow by using this method and class inherited from TelegramLibrary.Repositories.IUserRepository
                 //.UseRepository(() => getUserRepository)
@@ -44,7 +45,15 @@ namespace Sample
                         // Tip: Here you can create a message with text and (if you want) other controls (buttons, etc.)
                         .UseMessage()
                             .UseText("You're in main window!")
+                            .UseKeyboardControls()
+                                .CreateRow()
+                                    .UseKeyboardButtonControl("Phone number", (o, e) => { })
+                                        .RequestPhoneNumber()
+                            .SaveControls()
                         .SaveMessage()
+                        .UseWindowControls()
+                            .UseContactInputControl((o, e) => e.TelegramInteractor.SendText($"The phone number has been received: {e.TelegramInteractor.Message.Contact.PhoneNumber}"))
+                        .SaveControls()
                     .SaveWindow()
                 // Tip: It creates the service with specified above options
                 .GetService()

@@ -25,9 +25,9 @@ namespace Sample
             services.AddSingleton<TelegramLibrary.ITelegramService>(services =>
                 new TelegramLibrary.Builders.TelegramServiceBuilder()
                 // Tip: This sets the webhook url where telegram will send updates
-                .UseWebHookUrl("https://97df-46-56-206-84.eu.ngrok.io/telegram/update")
+                .UseWebHookUrl("https://host.com/telegram/update")
                 // Tip: This is the token of bot that you will use
-                .UseToken("1654710052:AAGalH1UTr3VgT94ylvIqWdSRbc-WA0vFDg")
+                .UseToken("...")
                 // Tip: By default the library uses in-memory repository of users
                 // You can change this flow by using this method and class inherited from TelegramLibrary.Repositories.IUserRepository
                 //.UseRepository(() => getUserRepository)
@@ -38,7 +38,7 @@ namespace Sample
                         e.TelegramInteractor.SendStartWindow();
                     })
                     // Tip: To return to previous builder you should call method .Save...()
-                    .SaveControls()
+                .SaveControls()
                 // Tip: Creating initial window (initial because it's the first call of .UseWindow()
                 // Tip: To create others just call it as it's here)
                 .UseWindow(new Sample.Models.MainWindow())
@@ -54,7 +54,7 @@ namespace Sample
                         .UseWindowControls()
                             .UseContactInputControl((o, e) => e.TelegramInteractor.SendText($"The phone number has been received: {e.TelegramInteractor.Message.Contact.PhoneNumber}"))
                         .SaveControls()
-                    .SaveWindow()
+                .SaveWindow()
                 // Tip: It creates the service with specified above options
                 .GetService()
                 .Result

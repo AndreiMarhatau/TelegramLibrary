@@ -27,6 +27,8 @@ namespace TelegramLibrary.Builders
 
         public IMessageCallbackControlBuilder UseCallbackButtonControl(string text, string callbackData, EventHandler<ControlHandlingEventArgs> handler, TimeSpan? limiterDelay = null, EventHandler<ControlHandlingEventArgs> onReleaseLimiterHandler = null)
         {
+            CreateRowIfNotExist();
+
             var control = new CallbackButton(text, callbackData);
             control.HandleEvent += handler;
             _positionalControls.Last().Add(control);
@@ -47,6 +49,14 @@ namespace TelegramLibrary.Builders
         public IMessageBuilder SaveControls()
         {
             return this._telegramMessageBuilder.SaveControls(_positionalControls);
+        }
+
+        private void CreateRowIfNotExist()
+        {
+            if (!_positionalControls.Any())
+            {
+                CreateRow();
+            }
         }
     }
 }

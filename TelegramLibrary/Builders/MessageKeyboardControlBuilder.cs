@@ -27,6 +27,8 @@ namespace TelegramLibrary.Builders
 
         public IMessageKeyboardControlBuilder UseKeyboardButtonControl(string text, EventHandler<ControlHandlingEventArgs> handler, TimeSpan? limiterDelay = null, EventHandler<ControlHandlingEventArgs> onReleaseLimiterHandler = null)
         {
+            CreateRowIfNotExist();
+
             var control = new KeyboardButton(text);
             control.HandleEvent += handler;
             _positionalControls.Last().Add(control);
@@ -54,6 +56,14 @@ namespace TelegramLibrary.Builders
         {
             (_positionalControls.Last().Last() as KeyboardButton).RequestLocation = true;
             return this;
+        }
+
+        private void CreateRowIfNotExist()
+        {
+            if (!_positionalControls.Any())
+            {
+                CreateRow();
+            }
         }
     }
 }

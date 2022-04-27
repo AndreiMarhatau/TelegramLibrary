@@ -14,7 +14,7 @@ namespace TelegramLibrary.TelegramInteraction
         UserModel User { get; }
         Telegram.Bot.ITelegramBotClient TelegramBotClient { get; }
 
-        Task SendWindow(Type type);
+        Task SendWindow(string name);
         Task SendText(string text);
         Task SendStartWindow();
         Task DeleteKeyboard(string text);

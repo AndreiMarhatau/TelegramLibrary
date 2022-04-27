@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TelegramLibrary.Models;
+using TelegramLibrary.Models.ArgsForEvents;
 using TelegramLibrary.Repositories;
 
 namespace TelegramLibrary.Builders
@@ -56,13 +57,13 @@ namespace TelegramLibrary.Builders
             return this;
         }
 
-        public IWindowBuilder UseWindow(WindowBase window)
+        public IWindowBuilder UseWindow(string name)
         {
-            if (_windows.Select(window => window.GetFullName()).Any(windowName => windowName == window.GetFullName()))
+            if (_windows.Select(window => window.GetFullName()).Any(windowName => windowName == name))
             {
                 throw new InvalidOperationException("Every window should be registered only once.");
             }
-            return new WindowBuilder(this, window);
+            return new WindowBuilder(this, new WindowBase(name));
         }
 
         ITelegramServiceBuilder ITelegramServicePropertiesSaver.SaveWindow(WindowBase window)
@@ -83,6 +84,13 @@ namespace TelegramLibrary.Builders
         public ITelegramServiceBuilder SaveLimiter(IConnectionLimiter limiter)
         {
             this._limiter = limiter;
+            return this;
+        }
+
+        public ITelegramServiceBuilder UseDefaultHandler(EventHandler<ControlHandlingEventArgs> defaultHandler)
+        {
+            LibraryStaticContext.Storage.DefaultControl = new Models.MainControls.DefaultControl();
+            LibraryStaticContext.Storage.DefaultControl.HandleEvent += defaultHandler;
             return this;
         }
 

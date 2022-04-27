@@ -40,7 +40,7 @@ namespace TelegramLibrary.TelegramInteraction
 
         public async Task SendStartWindow()
         {
-            await SendWindow(_initialWindow.GetType());
+            await SendWindow(_initialWindow.GetFullName());
         }
 
         public async Task SendText(string text)
@@ -48,9 +48,16 @@ namespace TelegramLibrary.TelegramInteraction
             await this._telegramBotClient.SendTextMessageAsync(_update.GetMessage().Chat.Id, text);
         }
 
-        public async Task SendWindow(Type windowType)
+        public async Task SendWindow(string name)
         {
-            var window = _storage.RegisteredWindows.Single(window => window.GetType() == windowType);
+            var window = _storage.RegisteredWindows.Single(window => window.GetFullName() == name);
+
+            if (!window.Messages.Any(m => m.PositionalControls.SelectMany(pc => pc).Any(c => c is Models.WindowControls.KeyboardButton)))
+            {
+                var msg = await _telegramBotClient.SendTextMessageAsync(_update.GetMessage().Chat.Id, ".", replyMarkup: new ReplyKeyboardRemove(), disableNotification: true);
+                await _telegramBotClient.DeleteMessageAsync(_update.GetMessage().Chat.Id, msg.MessageId);
+            }
+
             foreach (var message in window.Messages)
             {
                 bool? isCallback = message.PositionalControls.Any() ? message.PositionalControls.First().First() is Models.WindowControls.CallbackButton : null;

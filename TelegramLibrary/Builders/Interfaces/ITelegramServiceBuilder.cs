@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TelegramLibrary.Models;
+using TelegramLibrary.Models.ArgsForEvents;
 using TelegramLibrary.Repositories;
 
 namespace TelegramLibrary.Builders
@@ -16,7 +17,8 @@ namespace TelegramLibrary.Builders
         ITelegramServiceBuilder UseRepository(Func<IUserRepository> getRepository);
         IMainControlBuilder UseMainControls();
         ITelegramServiceBuilder RegisterCommands();
-        IWindowBuilder UseWindow(WindowBase window);
+        ITelegramServiceBuilder UseDefaultHandler(EventHandler<ControlHandlingEventArgs> defaultHandler);
+        IWindowBuilder UseWindow(string name);
         IConnectionLimiterBuilder UseConnectionLimiter();
         Task<ITelegramService> GetService();
     }

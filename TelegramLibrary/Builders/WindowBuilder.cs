@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TelegramLibrary.Models;
+using TelegramLibrary.Models.ArgsForEvents;
 
 namespace TelegramLibrary.Builders
 {
@@ -38,6 +39,13 @@ namespace TelegramLibrary.Builders
         public IWindowControlBuilder UseWindowControls()
         {
             return new WindowControlBuilder(this);
+        }
+
+        public IWindowBuilder UseDefaultHandler(EventHandler<ControlHandlingEventArgs> defaultHandler)
+        {
+            _window.DefaultControl = new Models.MainControls.DefaultControl();
+            _window.DefaultControl.HandleEvent += defaultHandler;
+            return this;
         }
 
         public ITelegramServiceBuilder SaveWindow()

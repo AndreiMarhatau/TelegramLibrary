@@ -92,6 +92,14 @@ namespace TelegramLibrary
                     windowControl.Handle(telegramInteractor);
                     return;
                 }
+
+                var defaultControl = window.DefaultControl ?? _storage.DefaultControl;
+
+                if(defaultControl != null)
+                {
+                    defaultControl.Handle(telegramInteractor);
+                    return;
+                }
             }
             finally
             {

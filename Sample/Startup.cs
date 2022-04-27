@@ -40,6 +40,8 @@ namespace Sample
                 // Tip: To return to previous builder you should call method .Save...()
                 .SaveControls()
                 // Tip: This handler will be called if there are no controls that can handle the request
+                // This handler will never be called because all windows have theirs default handlers
+                // It works when user in a window without a default handler
                 .UseDefaultHandler((o, e) => e.TelegramInteractor.SendText("This is the main default handler"))
                 // Tip: Creating initial window (initial because it's the first call of .UseWindow()
                 // Tip: To create others just call it as it's here)
